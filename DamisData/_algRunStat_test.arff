@@ -1,0 +1,6 @@
+%
+@ATTRIBUTE algError REAL
+@ATTRIBUTE calcTime REAL
+%
+@DATA
+0, 0

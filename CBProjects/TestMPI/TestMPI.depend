@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1488607200 source:/home/damis/Documents/CBProjects/TestMPI/main.cpp
+	<mpi.h>
+	<stdio.h>
+
+1488556591 /mpich/include//mpi.h
+	<stddef.h>
+	<cstdint>
+	<stdint.h>
+	"mpio.h"
+	"mpicxx.h"
+
+1488556576 /mpich/include//mpio.h
+	"mpi.h"
+
+1488556591 /mpich/include//mpicxx.h
+	<stdio.h>
+
