@@ -134,7 +134,7 @@ private:
      *  \return answer - The boolean value, i.e. if \a true - it means that there are already such DataObject,
      *  \a false - otherwise.
      */
-    bool isIdentical(DataObject dataObject);
+    bool isIdentical(DataObject* dataObject);
     /*! \var ObjectMatrix tmpX;
      *  \brief temporary X matrix
      */

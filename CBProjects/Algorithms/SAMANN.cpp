@@ -62,45 +62,18 @@ ObjectMatrix SAMANN::getProjection()
 
     int n = X.getObjectAt(0).getFeatureCount();
     int m = X.getObjectCount();
-    double ddelta_L[mTrain][d + 1];
-    double delta_tarp[mTrain];
-    double ddelta_tarp[mTrain];
+    double ddelta_L[mTrain][d + 1] = {};
+    double delta_tarp[mTrain] = {};
+    double ddelta_tarp[mTrain] = {};
     double tarp = 0.0, tarp2 = 0.0, lambda, tmp, distXp, distYis, bestStress = 0.0, currStress = 0.0;
-    std::vector<std::vector<double> > best_w1;
-    std::vector<std::vector<double> > best_w2;
+    std::vector<std::vector<double> > best_w1 (nNeurons+1, std::vector<double>(n+1, 0.0));
+    std::vector<std::vector<double> > best_w2 (d+1, std::vector<double>(nNeurons+1, 0.0));
     initializeWeights();   // w1, w2
     NormalizeX();
     initializeExitMatrixes();   // Y_pasl, Y_is
     initializeDeltaL();    // delta_L
 
-    std::vector<double> w1Row, w2Row;
-    w1Row.reserve(n + 1);
-    w2Row.reserve(nNeurons + 1);
-    for (int i = 0; i < nNeurons + 1; i++)
-    {
-        for (int j = 0; j < n + 1; j++)
-            w1Row.push_back(0.0);
-        best_w1.push_back(w1Row);
-        w1Row.clear();
-    }
-
-    for (int i = 0; i < d + 1; i++)
-    {
-        for (int j = 0; j < nNeurons + 1; j++)
-            w2Row.push_back(0.0);
-        best_w2.push_back(w2Row);
-        w2Row.clear();
-    }
-
     lambda = getLambda();
-
-    for (int i = 0; i < mTrain; i++)
-    {
-        for (int j = 0; j < d + 1; j++)
-            ddelta_L[i][j] = 0.0;
-        delta_tarp[i] = 0.0;
-        ddelta_tarp[i] = 0.0;
-    }
 
     bestStress = getStress();
 
@@ -315,10 +288,10 @@ void SAMANN::getXp()
     double r = Statistics::getRandom(1, m);
     DataObject dObject;
     index = static_cast<int>(r);
-    while (k < m)
+    for(int j=k; j<m; j++)
     {
         dObject = X.getObjectAt(index);
-        if (isIdentical(dObject) == false)
+        if (isIdentical(&dObject) == false)
         {
             Xp.addObject(dObject);
             i++;
@@ -326,27 +299,25 @@ void SAMANN::getXp()
                 break;
         }
         index = (index + 1) % m;
-        k++;
     }
 
     if (i < mTrain)
     {
         index = 0;
-        while (i < mTrain)
+        for(int j=i; j<mTrain; j++)
         {
             dObject = X.getObjectAt(index);
             Xp.addObject(dObject);
-            i++;
             index = (index + 1) % m;
         }
     }
 }
 
-bool SAMANN::isIdentical(DataObject obj)
+bool SAMANN::isIdentical(DataObject* obj)
 {
     bool ats = false;
     int n = Xp.getObjectCount();
-    int m = obj.getFeatureCount();
+    int m = obj->getFeatureCount();
     int k = 0;
 
     DataObject objXi;
@@ -356,7 +327,7 @@ bool SAMANN::isIdentical(DataObject obj)
         k = 0;
         objXi = Xp.getObjectAt(i);
         for (int j = 0; j < m; j++)
-            if (obj.getFeatureAt(j) == objXi.getFeatureAt(j))
+            if (obj->getFeatureAt(j) == objXi.getFeatureAt(j))
                 k++;
         if (k == m)
         {
@@ -421,22 +392,13 @@ void SAMANN::initializeExitMatrixes()
     int m = X.getObjectCount();
     Y_is = ObjectMatrix(m);
     Y_pasl = ObjectMatrix(m);
-    std::vector<double> YisRow, YpaslRow;
-    YisRow.reserve(d + 1);
-    YpaslRow.reserve(nNeurons + 1);
+    std::vector<double> YisRow(d+1, 1.0);
+    std::vector<double> YpaslRow(nNeurons+1, 1.0);
 
     for (int i = 0; i < m; i++)
     {
-        for (int j = 0; j < d + 1; j++)
-            YisRow.push_back(1.0);
         Y_is.addObject(DataObject(YisRow));
-
-        for (int j = 0; j < nNeurons + 1; j++)
-            YpaslRow.push_back(1.0);
         Y_pasl.addObject(DataObject(YpaslRow));
-
-        YisRow.clear();
-        YpaslRow.clear();
     }
 }
 
@@ -444,16 +406,10 @@ void SAMANN::initializeDeltaL()
 {
     delta_L = ObjectMatrix(mTrain);
 
-    std::vector<double> deltaLRow;
-    deltaLRow.reserve(mTrain);
+    std::vector<double> deltaLRow(mTrain, 0.1);
 
     for (int i = 0; i < mTrain; i++)
-    {
-        for (int j = 0; j < mTrain; j++)
-            deltaLRow.push_back(0.1);
         delta_L.addObject(DataObject(deltaLRow));
-        deltaLRow.clear();
-    }
 }
 
 std::vector<double> SAMANN::getStressErrors()
