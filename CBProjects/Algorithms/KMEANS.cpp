@@ -28,10 +28,10 @@ ObjectMatrix KMEANS::getProjection()
     int rowsX = X.getObjectCount(), colsX = X.getObjectAt(0).getFeatureCount();
     inputArray.setlength(rowsX, colsX);
 
-    for ( int i = 0; i < rowsX; i++ ) // convert X matrix to alglib 2d array of reals
+    for (int i = 0; i < rowsX; i++) // convert X matrix to alglib 2d array of reals
     {
         DataObject tmp = X.getObjectAt(i);
-        for ( int j = 0; j < colsX; j++ )
+        for (int j = 0; j < colsX; j++)
         {
             inputArray(i,j) = tmp.getFeatureAt(j);
         }
@@ -50,7 +50,7 @@ ObjectMatrix KMEANS::getProjection()
 
     if (int(kmeansReport.terminationtype) == 1) //if success
     {
-        for ( int i = 0; i < ClusterizationMethods::getNoOfReturnRows(); i++ ) // updates return Y matrix class values (sets to those returned by kmeans)
+        for (int i = 0; i < ClusterizationMethods::getNoOfReturnRows(); i++) // updates return Y matrix class values (sets to those returned by kmeans)
                 Y.updateDataObjectClass(i, kmeansReport.cidx(i));
     }
      return Y;
