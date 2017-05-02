@@ -5,7 +5,7 @@ Copyright (c) Sergey Bochkanov (ALGLIB project).
 >>> SOURCE LICENSE >>>
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation (www.fsf.org); either version 2 of the 
+the Free Software Foundation (www.fsf.org); either version 2 of the
 License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful,
@@ -90,7 +90,7 @@ typedef struct
     ae_int_t k;
     ae_matrix c;
     ae_vector cidx;
-} kmeansreport;
+} KmeansReport;
 typedef struct
 {
     ae_int_t nvars;
@@ -565,18 +565,18 @@ public:
     _kmeansreport_owner(const _kmeansreport_owner &rhs);
     _kmeansreport_owner& operator=(const _kmeansreport_owner &rhs);
     virtual ~_kmeansreport_owner();
-    alglib_impl::kmeansreport* c_ptr();
-    alglib_impl::kmeansreport* c_ptr() const;
+    alglib_impl::KmeansReport* c_ptr();
+    alglib_impl::KmeansReport* c_ptr() const;
 protected:
-    alglib_impl::kmeansreport *p_struct;
+    alglib_impl::KmeansReport *p_struct;
 };
-class kmeansreport : public _kmeansreport_owner
+class KmeansReport : public _kmeansreport_owner
 {
 public:
-    kmeansreport();
-    kmeansreport(const kmeansreport &rhs);
-    kmeansreport& operator=(const kmeansreport &rhs);
-    virtual ~kmeansreport();
+    KmeansReport();
+    KmeansReport(const KmeansReport &rhs);
+    KmeansReport& operator=(const KmeansReport &rhs);
+    virtual ~KmeansReport();
     ae_int_t &npoints;
     ae_int_t &nfeatures;
     ae_int_t &terminationtype;
@@ -1380,8 +1380,8 @@ NOTE 1: k-means  clustering  can  be  performed  only  for  datasets  with
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizerrunkmeans(const clusterizerstate &s, const ae_int_t k, kmeansreport &rep);
-void smp_clusterizerrunkmeans(const clusterizerstate &s, const ae_int_t k, kmeansreport &rep);
+void clusterizerrunkmeans(const clusterizerstate &s, const ae_int_t k, KmeansReport &rep);
+void smp_clusterizerrunkmeans(const clusterizerstate &s, const ae_int_t k, KmeansReport &rep);
 
 
 /*************************************************************************
@@ -1612,17 +1612,17 @@ Important properties of s_out:
 * it contains alphanumeric characters, dots, underscores, minus signs
 * these symbols are grouped into words, which are separated by spaces
   and Windows-style (CR+LF) newlines
-* although  serializer  uses  spaces and CR+LF as separators, you can 
+* although  serializer  uses  spaces and CR+LF as separators, you can
   replace any separator character by arbitrary combination of spaces,
   tabs, Windows or Unix newlines. It allows flexible reformatting  of
-  the  string  in  case you want to include it into text or XML file. 
+  the  string  in  case you want to include it into text or XML file.
   But you should not insert separators into the middle of the "words"
   nor you should change case of letters.
 * s_out can be freely moved between 32-bit and 64-bit systems, little
   and big endian machines, and so on. You can serialize structure  on
   32-bit machine and unserialize it on 64-bit one (or vice versa), or
-  serialize  it  on  SPARC  and  unserialize  on  x86.  You  can also 
-  serialize  it  in  C++ version of ALGLIB and unserialize in C# one, 
+  serialize  it  on  SPARC  and  unserialize  on  x86.  You  can also
+  serialize  it  in  C++ version of ALGLIB and unserialize in C# one,
   and vice versa.
 *************************************************************************/
 void dfserialize(decisionforest &obj, std::string &s_out);
@@ -2279,17 +2279,17 @@ Important properties of s_out:
 * it contains alphanumeric characters, dots, underscores, minus signs
 * these symbols are grouped into words, which are separated by spaces
   and Windows-style (CR+LF) newlines
-* although  serializer  uses  spaces and CR+LF as separators, you can 
+* although  serializer  uses  spaces and CR+LF as separators, you can
   replace any separator character by arbitrary combination of spaces,
   tabs, Windows or Unix newlines. It allows flexible reformatting  of
-  the  string  in  case you want to include it into text or XML file. 
+  the  string  in  case you want to include it into text or XML file.
   But you should not insert separators into the middle of the "words"
   nor you should change case of letters.
 * s_out can be freely moved between 32-bit and 64-bit systems, little
   and big endian machines, and so on. You can serialize structure  on
   32-bit machine and unserialize it on 64-bit one (or vice versa), or
-  serialize  it  on  SPARC  and  unserialize  on  x86.  You  can also 
-  serialize  it  in  C++ version of ALGLIB and unserialize in C# one, 
+  serialize  it  on  SPARC  and  unserialize  on  x86.  You  can also
+  serialize  it  in  C++ version of ALGLIB and unserialize in C# one,
   and vice versa.
 *************************************************************************/
 void mlpserialize(multilayerperceptron &obj, std::string &s_out);
@@ -5144,17 +5144,17 @@ Important properties of s_out:
 * it contains alphanumeric characters, dots, underscores, minus signs
 * these symbols are grouped into words, which are separated by spaces
   and Windows-style (CR+LF) newlines
-* although  serializer  uses  spaces and CR+LF as separators, you can 
+* although  serializer  uses  spaces and CR+LF as separators, you can
   replace any separator character by arbitrary combination of spaces,
   tabs, Windows or Unix newlines. It allows flexible reformatting  of
-  the  string  in  case you want to include it into text or XML file. 
+  the  string  in  case you want to include it into text or XML file.
   But you should not insert separators into the middle of the "words"
   nor you should change case of letters.
 * s_out can be freely moved between 32-bit and 64-bit systems, little
   and big endian machines, and so on. You can serialize structure  on
   32-bit machine and unserialize it on 64-bit one (or vice versa), or
-  serialize  it  on  SPARC  and  unserialize  on  x86.  You  can also 
-  serialize  it  in  C++ version of ALGLIB and unserialize in C# one, 
+  serialize  it  on  SPARC  and  unserialize  on  x86.  You  can also
+  serialize  it  in  C++ version of ALGLIB and unserialize in C# one,
   and vice versa.
 *************************************************************************/
 void mlpeserialize(mlpensemble &obj, std::string &s_out);
@@ -6433,11 +6433,11 @@ void _pexec_clusterizerrunahc(clusterizerstate* s,
     ahcreport* rep, ae_state *_state);
 void clusterizerrunkmeans(clusterizerstate* s,
      ae_int_t k,
-     kmeansreport* rep,
+     KmeansReport* rep,
      ae_state *_state);
 void _pexec_clusterizerrunkmeans(clusterizerstate* s,
     ae_int_t k,
-    kmeansreport* rep, ae_state *_state);
+    KmeansReport* rep, ae_state *_state);
 void clusterizergetdistances(/* Real    */ ae_matrix* xy,
      ae_int_t npoints,
      ae_int_t nfeatures,

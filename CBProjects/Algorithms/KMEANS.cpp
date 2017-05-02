@@ -22,25 +22,25 @@ KMEANS::KMEANS(int noOfClusters, int maxIter):ClusterizationMethods(noOfClusters
 
 ObjectMatrix KMEANS::getProjection()
 {
-    alglib::clusterizerstate s = {};
-    alglib::kmeansreport rep = {};
-    alglib::real_2d_array input = {};
+    alglib::clusterizerstate clusterizerState = {};
+    alglib::KmeansReport kmeansReport = {};
+    alglib::real_2d_array inputArray = {};
     int rowsX = X.getObjectCount(), colsX = X.getObjectAt(0).getFeatureCount();
-    input.setlength(rowsX, colsX);
+    inputArray.setlength(rowsX, colsX);
 
     for ( int i = 0; i < rowsX; i++ ) // convert X matrix to alglib 2d array of reals
     {
         DataObject tmp = X.getObjectAt(i);
         for ( int j = 0; j < colsX; j++ )
         {
-            input(i,j) = tmp.getFeatureAt(j);
+            inputArray(i,j) = tmp.getFeatureAt(j);
         }
     }
 
-    alglib::clusterizercreate(s);
-    alglib::clusterizersetpoints(s, input, 2); //2 means Euclidean distances
-    alglib::clusterizersetkmeanslimits(s, 1, this->maxIter);        //1 means quantity of restarts, if maxIter = 0 then unlimited number of iterations are performed
-    alglib::clusterizerrunkmeans(s, ClusterizationMethods::getNoOfClusters(), rep);
+    alglib::clusterizercreate(clusterizerState);
+    alglib::clusterizersetpoints(clusterizerState, inputArray, 2); //2 means Euclidean distances
+    alglib::clusterizersetkmeanslimits(clusterizerState, 1, this->maxIter);        //1 means quantity of restarts, if maxIter = 0 then unlimited number of iterations are performed
+    alglib::clusterizerrunkmeans(clusterizerState, ClusterizationMethods::getNoOfClusters(), kmeansReport);
 
     Y = X;
     std::vector <std::string> classes; classes.reserve(0);
@@ -48,10 +48,10 @@ ObjectMatrix KMEANS::getProjection()
         classes.push_back(std::to_string(static_cast<long long>(i)));
     Y.setPrintClass(classes);
 
-    if (int(rep.terminationtype) == 1) //if success
+    if (int(kmeansReport.terminationtype) == 1) //if success
     {
         for ( int i = 0; i < ClusterizationMethods::getNoOfReturnRows(); i++ ) // updates return Y matrix class values (sets to those returned by kmeans)
-                Y.updateDataObjectClass(i, rep.cidx(i));
+                Y.updateDataObjectClass(i, kmeansReport.cidx(i));
     }
      return Y;
 }
