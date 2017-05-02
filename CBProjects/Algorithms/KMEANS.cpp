@@ -22,9 +22,9 @@ KMEANS::KMEANS(int noOfClusters, int maxIter):ClusterizationMethods(noOfClusters
 
 ObjectMatrix KMEANS::getProjection()
 {
-    alglib::clusterizerstate s;
-    alglib::kmeansreport rep;
-    alglib::real_2d_array input;
+    alglib::clusterizerstate s = {};
+    alglib::kmeansreport rep = {};
+    alglib::real_2d_array input = {};
     int rowsX = X.getObjectCount(), colsX = X.getObjectAt(0).getFeatureCount();
     input.setlength(rowsX, colsX);
 
