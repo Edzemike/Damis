@@ -132,7 +132,7 @@ Use ALGLIB functions in order to work with this object.
 *************************************************************************/
 _clusterizerstate_owner::_clusterizerstate_owner()
 {
-    p_struct = (alglib_impl::clusterizerstate*)alglib_impl::ae_malloc(sizeof(alglib_impl::clusterizerstate), NULL);
+    p_struct = (alglib_impl::ClusterizerState*)alglib_impl::ae_malloc(sizeof(alglib_impl::ClusterizerState), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
     alglib_impl::_clusterizerstate_init(p_struct, NULL);
@@ -140,10 +140,10 @@ _clusterizerstate_owner::_clusterizerstate_owner()
 
 _clusterizerstate_owner::_clusterizerstate_owner(const _clusterizerstate_owner &rhs)
 {
-    p_struct = (alglib_impl::clusterizerstate*)alglib_impl::ae_malloc(sizeof(alglib_impl::clusterizerstate), NULL);
+    p_struct = (alglib_impl::ClusterizerState*)alglib_impl::ae_malloc(sizeof(alglib_impl::ClusterizerState), NULL);
     if( p_struct==NULL )
         throw ap_error("ALGLIB: malloc error");
-    alglib_impl::_clusterizerstate_init_copy(p_struct, const_cast<alglib_impl::clusterizerstate*>(rhs.p_struct), NULL);
+    alglib_impl::_clusterizerstate_init_copy(p_struct, const_cast<alglib_impl::ClusterizerState*>(rhs.p_struct), NULL);
 }
 
 _clusterizerstate_owner& _clusterizerstate_owner::operator=(const _clusterizerstate_owner &rhs)
@@ -151,7 +151,7 @@ _clusterizerstate_owner& _clusterizerstate_owner::operator=(const _clusterizerst
     if( this==&rhs )
         return *this;
     alglib_impl::_clusterizerstate_clear(p_struct);
-    alglib_impl::_clusterizerstate_init_copy(p_struct, const_cast<alglib_impl::clusterizerstate*>(rhs.p_struct), NULL);
+    alglib_impl::_clusterizerstate_init_copy(p_struct, const_cast<alglib_impl::ClusterizerState*>(rhs.p_struct), NULL);
     return *this;
 }
 
@@ -161,24 +161,24 @@ _clusterizerstate_owner::~_clusterizerstate_owner()
     ae_free(p_struct);
 }
 
-alglib_impl::clusterizerstate* _clusterizerstate_owner::c_ptr()
+alglib_impl::ClusterizerState* _clusterizerstate_owner::c_ptr()
 {
     return p_struct;
 }
 
-alglib_impl::clusterizerstate* _clusterizerstate_owner::c_ptr() const
+alglib_impl::ClusterizerState* _clusterizerstate_owner::c_ptr() const
 {
-    return const_cast<alglib_impl::clusterizerstate*>(p_struct);
+    return const_cast<alglib_impl::ClusterizerState*>(p_struct);
 }
-clusterizerstate::clusterizerstate() : _clusterizerstate_owner()
-{
-}
-
-clusterizerstate::clusterizerstate(const clusterizerstate &rhs):_clusterizerstate_owner(rhs)
+ClusterizerState::ClusterizerState() : _clusterizerstate_owner()
 {
 }
 
-clusterizerstate& clusterizerstate::operator=(const clusterizerstate &rhs)
+ClusterizerState::ClusterizerState(const ClusterizerState &rhs):_clusterizerstate_owner(rhs)
+{
+}
+
+ClusterizerState& ClusterizerState::operator=(const ClusterizerState &rhs)
 {
     if( this==&rhs )
         return *this;
@@ -186,7 +186,7 @@ clusterizerstate& clusterizerstate::operator=(const clusterizerstate &rhs)
     return *this;
 }
 
-clusterizerstate::~clusterizerstate()
+ClusterizerState::~ClusterizerState()
 {
 }
 
@@ -461,13 +461,13 @@ empty, i.e. it does not contain dataset. You should use it as follows:
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizercreate(clusterizerstate &s)
+void clusterizercreate(ClusterizerState &s)
 {
     alglib_impl::ae_state _alglib_env_state;
     alglib_impl::ae_state_init(&_alglib_env_state);
     try
     {
-        alglib_impl::clusterizercreate(const_cast<alglib_impl::clusterizerstate*>(s.c_ptr()), &_alglib_env_state);
+        alglib_impl::clusterizercreate(const_cast<alglib_impl::ClusterizerState*>(s.c_ptr()), &_alglib_env_state);
         alglib_impl::ae_state_clear(&_alglib_env_state);
         return;
     }
@@ -526,13 +526,13 @@ NOTE 2: different clustering algorithms have different limitations:
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetpoints(const clusterizerstate &s, const real_2d_array &xy, const ae_int_t npoints, const ae_int_t nfeatures, const ae_int_t disttype)
+void clusterizersetpoints(const ClusterizerState &s, const real_2d_array &xy, const ae_int_t npoints, const ae_int_t nfeatures, const ae_int_t disttype)
 {
     alglib_impl::ae_state _alglib_env_state;
     alglib_impl::ae_state_init(&_alglib_env_state);
     try
     {
-        alglib_impl::clusterizersetpoints(const_cast<alglib_impl::clusterizerstate*>(s.c_ptr()), const_cast<alglib_impl::ae_matrix*>(xy.c_ptr()), npoints, nfeatures, disttype, &_alglib_env_state);
+        alglib_impl::clusterizersetpoints(const_cast<alglib_impl::ClusterizerState*>(s.c_ptr()), const_cast<alglib_impl::ae_matrix*>(xy.c_ptr()), npoints, nfeatures, disttype, &_alglib_env_state);
         alglib_impl::ae_state_clear(&_alglib_env_state);
         return;
     }
@@ -591,7 +591,7 @@ NOTE 2: different clustering algorithms have different limitations:
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetpoints(const clusterizerstate &s, const real_2d_array &xy, const ae_int_t disttype)
+void clusterizersetpoints(const ClusterizerState &s, const real_2d_array &xy, const ae_int_t disttype)
 {
     alglib_impl::ae_state _alglib_env_state;
     ae_int_t npoints;
@@ -602,7 +602,7 @@ void clusterizersetpoints(const clusterizerstate &s, const real_2d_array &xy, co
     alglib_impl::ae_state_init(&_alglib_env_state);
     try
     {
-        alglib_impl::clusterizersetpoints(const_cast<alglib_impl::clusterizerstate*>(s.c_ptr()), const_cast<alglib_impl::ae_matrix*>(xy.c_ptr()), npoints, nfeatures, disttype, &_alglib_env_state);
+        alglib_impl::clusterizersetpoints(const_cast<alglib_impl::ClusterizerState*>(s.c_ptr()), const_cast<alglib_impl::ae_matrix*>(xy.c_ptr()), npoints, nfeatures, disttype, &_alglib_env_state);
 
         alglib_impl::ae_state_clear(&_alglib_env_state);
         return;
@@ -642,13 +642,13 @@ NOTE 1: different clustering algorithms have different limitations:
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetdistances(const clusterizerstate &s, const real_2d_array &d, const ae_int_t npoints, const bool isupper)
+void clusterizersetdistances(const ClusterizerState &s, const real_2d_array &d, const ae_int_t npoints, const bool isupper)
 {
     alglib_impl::ae_state _alglib_env_state;
     alglib_impl::ae_state_init(&_alglib_env_state);
     try
     {
-        alglib_impl::clusterizersetdistances(const_cast<alglib_impl::clusterizerstate*>(s.c_ptr()), const_cast<alglib_impl::ae_matrix*>(d.c_ptr()), npoints, isupper, &_alglib_env_state);
+        alglib_impl::clusterizersetdistances(const_cast<alglib_impl::ClusterizerState*>(s.c_ptr()), const_cast<alglib_impl::ae_matrix*>(d.c_ptr()), npoints, isupper, &_alglib_env_state);
         alglib_impl::ae_state_clear(&_alglib_env_state);
         return;
     }
@@ -687,7 +687,7 @@ NOTE 1: different clustering algorithms have different limitations:
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetdistances(const clusterizerstate &s, const real_2d_array &d, const bool isupper)
+void clusterizersetdistances(const ClusterizerState &s, const real_2d_array &d, const bool isupper)
 {
     alglib_impl::ae_state _alglib_env_state;
     ae_int_t npoints;
@@ -697,7 +697,7 @@ void clusterizersetdistances(const clusterizerstate &s, const real_2d_array &d, 
     alglib_impl::ae_state_init(&_alglib_env_state);
     try
     {
-        alglib_impl::clusterizersetdistances(const_cast<alglib_impl::clusterizerstate*>(s.c_ptr()), const_cast<alglib_impl::ae_matrix*>(d.c_ptr()), npoints, isupper, &_alglib_env_state);
+        alglib_impl::clusterizersetdistances(const_cast<alglib_impl::ClusterizerState*>(s.c_ptr()), const_cast<alglib_impl::ae_matrix*>(d.c_ptr()), npoints, isupper, &_alglib_env_state);
 
         alglib_impl::ae_state_clear(&_alglib_env_state);
         return;
@@ -731,13 +731,13 @@ NOTE: Ward's method works correctly only with Euclidean  distance,  that's
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetahcalgo(const clusterizerstate &s, const ae_int_t algo)
+void clusterizersetahcalgo(const ClusterizerState &s, const ae_int_t algo)
 {
     alglib_impl::ae_state _alglib_env_state;
     alglib_impl::ae_state_init(&_alglib_env_state);
     try
     {
-        alglib_impl::clusterizersetahcalgo(const_cast<alglib_impl::clusterizerstate*>(s.c_ptr()), algo, &_alglib_env_state);
+        alglib_impl::clusterizersetahcalgo(const_cast<alglib_impl::ClusterizerState*>(s.c_ptr()), algo, &_alglib_env_state);
         alglib_impl::ae_state_clear(&_alglib_env_state);
         return;
     }
@@ -763,13 +763,13 @@ INPUT PARAMETERS:
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetkmeanslimits(const clusterizerstate &s, const ae_int_t restarts, const ae_int_t maxits)
+void clusterizersetkmeanslimits(const ClusterizerState &s, const ae_int_t restarts, const ae_int_t maxits)
 {
     alglib_impl::ae_state _alglib_env_state;
     alglib_impl::ae_state_init(&_alglib_env_state);
     try
     {
-        alglib_impl::clusterizersetkmeanslimits(const_cast<alglib_impl::clusterizerstate*>(s.c_ptr()), restarts, maxits, &_alglib_env_state);
+        alglib_impl::clusterizersetkmeanslimits(const_cast<alglib_impl::ClusterizerState*>(s.c_ptr()), restarts, maxits, &_alglib_env_state);
         alglib_impl::ae_state_clear(&_alglib_env_state);
         return;
     }
@@ -804,13 +804,13 @@ INPUT PARAMETERS:
   -- ALGLIB --
      Copyright 21.01.2015 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetkmeansinit(const clusterizerstate &s, const ae_int_t initalgo)
+void clusterizersetkmeansinit(const ClusterizerState &s, const ae_int_t initalgo)
 {
     alglib_impl::ae_state _alglib_env_state;
     alglib_impl::ae_state_init(&_alglib_env_state);
     try
     {
-        alglib_impl::clusterizersetkmeansinit(const_cast<alglib_impl::clusterizerstate*>(s.c_ptr()), initalgo, &_alglib_env_state);
+        alglib_impl::clusterizersetkmeansinit(const_cast<alglib_impl::ClusterizerState*>(s.c_ptr()), initalgo, &_alglib_env_state);
         alglib_impl::ae_state_clear(&_alglib_env_state);
         return;
     }
@@ -859,13 +859,13 @@ NOTE 1: hierarchical clustering algorithms require large amounts of memory.
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizerrunahc(const clusterizerstate &s, ahcreport &rep)
+void clusterizerrunahc(const ClusterizerState &s, ahcreport &rep)
 {
     alglib_impl::ae_state _alglib_env_state;
     alglib_impl::ae_state_init(&_alglib_env_state);
     try
     {
-        alglib_impl::clusterizerrunahc(const_cast<alglib_impl::clusterizerstate*>(s.c_ptr()), const_cast<alglib_impl::ahcreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::clusterizerrunahc(const_cast<alglib_impl::ClusterizerState*>(s.c_ptr()), const_cast<alglib_impl::ahcreport*>(rep.c_ptr()), &_alglib_env_state);
         alglib_impl::ae_state_clear(&_alglib_env_state);
         return;
     }
@@ -876,13 +876,13 @@ void clusterizerrunahc(const clusterizerstate &s, ahcreport &rep)
 }
 
 
-void smp_clusterizerrunahc(const clusterizerstate &s, ahcreport &rep)
+void smp_clusterizerrunahc(const ClusterizerState &s, ahcreport &rep)
 {
     alglib_impl::ae_state _alglib_env_state;
     alglib_impl::ae_state_init(&_alglib_env_state);
     try
     {
-        alglib_impl::_pexec_clusterizerrunahc(const_cast<alglib_impl::clusterizerstate*>(s.c_ptr()), const_cast<alglib_impl::ahcreport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::_pexec_clusterizerrunahc(const_cast<alglib_impl::ClusterizerState*>(s.c_ptr()), const_cast<alglib_impl::ahcreport*>(rep.c_ptr()), &_alglib_env_state);
         alglib_impl::ae_state_clear(&_alglib_env_state);
         return;
     }
@@ -947,13 +947,13 @@ NOTE 1: k-means  clustering  can  be  performed  only  for  datasets  with
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizerrunkmeans(const clusterizerstate &s, const ae_int_t k, KmeansReport &rep)
+void clusterizerrunkmeans(const ClusterizerState &s, const ae_int_t k, KmeansReport &rep)
 {
     alglib_impl::ae_state _alglib_env_state;
     alglib_impl::ae_state_init(&_alglib_env_state);
     try
     {
-        alglib_impl::clusterizerrunkmeans(const_cast<alglib_impl::clusterizerstate*>(s.c_ptr()), k, const_cast<alglib_impl::KmeansReport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::clusterizerrunkmeans(const_cast<alglib_impl::ClusterizerState*>(s.c_ptr()), k, const_cast<alglib_impl::KmeansReport*>(rep.c_ptr()), &_alglib_env_state);
         alglib_impl::ae_state_clear(&_alglib_env_state);
         return;
     }
@@ -964,13 +964,13 @@ void clusterizerrunkmeans(const clusterizerstate &s, const ae_int_t k, KmeansRep
 }
 
 
-void smp_clusterizerrunkmeans(const clusterizerstate &s, const ae_int_t k, KmeansReport &rep)
+void smp_clusterizerrunkmeans(const ClusterizerState &s, const ae_int_t k, KmeansReport &rep)
 {
     alglib_impl::ae_state _alglib_env_state;
     alglib_impl::ae_state_init(&_alglib_env_state);
     try
     {
-        alglib_impl::_pexec_clusterizerrunkmeans(const_cast<alglib_impl::clusterizerstate*>(s.c_ptr()), k, const_cast<alglib_impl::KmeansReport*>(rep.c_ptr()), &_alglib_env_state);
+        alglib_impl::_pexec_clusterizerrunkmeans(const_cast<alglib_impl::ClusterizerState*>(s.c_ptr()), k, const_cast<alglib_impl::KmeansReport*>(rep.c_ptr()), &_alglib_env_state);
         alglib_impl::ae_state_clear(&_alglib_env_state);
         return;
     }
@@ -9841,7 +9841,7 @@ static ae_bool clustering_fixcenters(/* Real    */ ae_matrix* xy,
      apbuffers* initbuf,
      ae_shared_pool* updatepool,
      ae_state *_state);
-static void clustering_clusterizerrunahcinternal(clusterizerstate* s,
+static void clustering_clusterizerrunahcinternal(ClusterizerState* s,
      /* Real    */ ae_matrix* d,
      ahcreport* rep,
      ae_state *_state);
@@ -11790,7 +11790,7 @@ empty, i.e. it does not contain dataset. You should use it as follows:
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizercreate(clusterizerstate* s, ae_state *_state)
+void clusterizercreate(ClusterizerState* s, ae_state *_state)
 {
 
     _clusterizerstate_clear(s);
@@ -11856,7 +11856,7 @@ NOTE 2: different clustering algorithms have different limitations:
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetpoints(clusterizerstate* s,
+void clusterizersetpoints(ClusterizerState* s,
      /* Real    */ ae_matrix* xy,
      ae_int_t npoints,
      ae_int_t nfeatures,
@@ -11912,7 +11912,7 @@ NOTE 1: different clustering algorithms have different limitations:
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetdistances(clusterizerstate* s,
+void clusterizersetdistances(ClusterizerState* s,
      /* Real    */ ae_matrix* d,
      ae_int_t npoints,
      ae_bool isupper,
@@ -11977,7 +11977,7 @@ NOTE: Ward's method works correctly only with Euclidean  distance,  that's
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetahcalgo(clusterizerstate* s,
+void clusterizersetahcalgo(ClusterizerState* s,
      ae_int_t algo,
      ae_state *_state)
 {
@@ -12004,7 +12004,7 @@ INPUT PARAMETERS:
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetkmeanslimits(clusterizerstate* s,
+void clusterizersetkmeanslimits(ClusterizerState* s,
      ae_int_t restarts,
      ae_int_t maxits,
      ae_state *_state)
@@ -12043,7 +12043,7 @@ INPUT PARAMETERS:
   -- ALGLIB --
      Copyright 21.01.2015 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetkmeansinit(clusterizerstate* s,
+void clusterizersetkmeansinit(ClusterizerState* s,
      ae_int_t initalgo,
      ae_state *_state)
 {
@@ -12093,7 +12093,7 @@ NOTE 1: hierarchical clustering algorithms require large amounts of memory.
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizerrunahc(clusterizerstate* s,
+void clusterizerrunahc(ClusterizerState* s,
      ahcreport* rep,
      ae_state *_state)
 {
@@ -12172,7 +12172,7 @@ void clusterizerrunahc(clusterizerstate* s,
 /*************************************************************************
 Single-threaded stub. HPC ALGLIB replaces it by multithreaded code.
 *************************************************************************/
-void _pexec_clusterizerrunahc(clusterizerstate* s,
+void _pexec_clusterizerrunahc(ClusterizerState* s,
     ahcreport* rep, ae_state *_state)
 {
     clusterizerrunahc(s,rep, _state);
@@ -12234,7 +12234,7 @@ NOTE 1: k-means  clustering  can  be  performed  only  for  datasets  with
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizerrunkmeans(clusterizerstate* s,
+void clusterizerrunkmeans(ClusterizerState* s,
      ae_int_t k,
      KmeansReport* rep,
      ae_state *_state)
@@ -12307,7 +12307,7 @@ void clusterizerrunkmeans(clusterizerstate* s,
 /*************************************************************************
 Single-threaded stub. HPC ALGLIB replaces it by multithreaded code.
 *************************************************************************/
-void _pexec_clusterizerrunkmeans(clusterizerstate* s,
+void _pexec_clusterizerrunkmeans(ClusterizerState* s,
     ae_int_t k,
     KmeansReport* rep, ae_state *_state)
 {
@@ -14125,7 +14125,7 @@ OUTPUT PARAMETERS:
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-static void clustering_clusterizerrunahcinternal(clusterizerstate* s,
+static void clustering_clusterizerrunahcinternal(ClusterizerState* s,
      /* Real    */ ae_matrix* d,
      ahcreport* rep,
      ae_state *_state)
@@ -14700,7 +14700,7 @@ void _kmeansbuffers_destroy(void* _p)
 
 void _clusterizerstate_init(void* _p, ae_state *_state)
 {
-    clusterizerstate *p = (clusterizerstate*)_p;
+    ClusterizerState *p = (ClusterizerState*)_p;
     ae_touch_ptr((void*)p);
     ae_matrix_init(&p->xy, 0, 0, DT_REAL, _state);
     ae_matrix_init(&p->d, 0, 0, DT_REAL, _state);
@@ -14712,8 +14712,8 @@ void _clusterizerstate_init(void* _p, ae_state *_state)
 
 void _clusterizerstate_init_copy(void* _dst, void* _src, ae_state *_state)
 {
-    clusterizerstate *dst = (clusterizerstate*)_dst;
-    clusterizerstate *src = (clusterizerstate*)_src;
+    ClusterizerState *dst = (ClusterizerState*)_dst;
+    ClusterizerState *src = (ClusterizerState*)_src;
     dst->npoints = src->npoints;
     dst->nfeatures = src->nfeatures;
     dst->disttype = src->disttype;
@@ -14732,7 +14732,7 @@ void _clusterizerstate_init_copy(void* _dst, void* _src, ae_state *_state)
 
 void _clusterizerstate_clear(void* _p)
 {
-    clusterizerstate *p = (clusterizerstate*)_p;
+    ClusterizerState *p = (ClusterizerState*)_p;
     ae_touch_ptr((void*)p);
     ae_matrix_clear(&p->xy);
     ae_matrix_clear(&p->d);
@@ -14744,7 +14744,7 @@ void _clusterizerstate_clear(void* _p)
 
 void _clusterizerstate_destroy(void* _p)
 {
-    clusterizerstate *p = (clusterizerstate*)_p;
+    ClusterizerState *p = (ClusterizerState*)_p;
     ae_touch_ptr((void*)p);
     ae_matrix_destroy(&p->xy);
     ae_matrix_destroy(&p->d);

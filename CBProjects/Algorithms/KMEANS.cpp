@@ -22,10 +22,11 @@ KMEANS::KMEANS(int noOfClusters, int maxIter):ClusterizationMethods(noOfClusters
 
 ObjectMatrix KMEANS::getProjection()
 {
-    alglib::clusterizerstate clusterizerState = {};
+    alglib::ClusterizerState clusterizerState = {};
     alglib::KmeansReport kmeansReport = {};
     alglib::real_2d_array inputArray = {};
-    int rowsX = X.getObjectCount(), colsX = X.getObjectAt(0).getFeatureCount();
+    int rowsX = X.getObjectCount();
+    int colsX = X.getObjectAt(0).getFeatureCount();
     inputArray.setlength(rowsX, colsX);
 
     for (int i = 0; i < rowsX; i++) // convert X matrix to alglib 2d array of reals

@@ -69,7 +69,7 @@ typedef struct
     ae_matrix tmpd;
     apbuffers distbuf;
     kmeansbuffers kmeanstmp;
-} clusterizerstate;
+} ClusterizerState;
 typedef struct
 {
     ae_int_t terminationtype;
@@ -374,18 +374,18 @@ public:
     _clusterizerstate_owner(const _clusterizerstate_owner &rhs);
     _clusterizerstate_owner& operator=(const _clusterizerstate_owner &rhs);
     virtual ~_clusterizerstate_owner();
-    alglib_impl::clusterizerstate* c_ptr();
-    alglib_impl::clusterizerstate* c_ptr() const;
+    alglib_impl::ClusterizerState* c_ptr();
+    alglib_impl::ClusterizerState* c_ptr() const;
 protected:
-    alglib_impl::clusterizerstate *p_struct;
+    alglib_impl::ClusterizerState *p_struct;
 };
-class clusterizerstate : public _clusterizerstate_owner
+class ClusterizerState : public _clusterizerstate_owner
 {
 public:
-    clusterizerstate();
-    clusterizerstate(const clusterizerstate &rhs);
-    clusterizerstate& operator=(const clusterizerstate &rhs);
-    virtual ~clusterizerstate();
+    ClusterizerState();
+    ClusterizerState(const ClusterizerState &rhs);
+    ClusterizerState& operator=(const ClusterizerState &rhs);
+    virtual ~ClusterizerState();
 
 };
 
@@ -1120,7 +1120,7 @@ empty, i.e. it does not contain dataset. You should use it as follows:
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizercreate(clusterizerstate &s);
+void clusterizercreate(ClusterizerState &s);
 
 
 /*************************************************************************
@@ -1172,8 +1172,8 @@ NOTE 2: different clustering algorithms have different limitations:
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetpoints(const clusterizerstate &s, const real_2d_array &xy, const ae_int_t npoints, const ae_int_t nfeatures, const ae_int_t disttype);
-void clusterizersetpoints(const clusterizerstate &s, const real_2d_array &xy, const ae_int_t disttype);
+void clusterizersetpoints(const ClusterizerState &s, const real_2d_array &xy, const ae_int_t npoints, const ae_int_t nfeatures, const ae_int_t disttype);
+void clusterizersetpoints(const ClusterizerState &s, const real_2d_array &xy, const ae_int_t disttype);
 
 
 /*************************************************************************
@@ -1205,8 +1205,8 @@ NOTE 1: different clustering algorithms have different limitations:
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetdistances(const clusterizerstate &s, const real_2d_array &d, const ae_int_t npoints, const bool isupper);
-void clusterizersetdistances(const clusterizerstate &s, const real_2d_array &d, const bool isupper);
+void clusterizersetdistances(const ClusterizerState &s, const real_2d_array &d, const ae_int_t npoints, const bool isupper);
+void clusterizersetdistances(const ClusterizerState &s, const real_2d_array &d, const bool isupper);
 
 
 /*************************************************************************
@@ -1232,7 +1232,7 @@ NOTE: Ward's method works correctly only with Euclidean  distance,  that's
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetahcalgo(const clusterizerstate &s, const ae_int_t algo);
+void clusterizersetahcalgo(const ClusterizerState &s, const ae_int_t algo);
 
 
 /*************************************************************************
@@ -1251,7 +1251,7 @@ INPUT PARAMETERS:
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetkmeanslimits(const clusterizerstate &s, const ae_int_t restarts, const ae_int_t maxits);
+void clusterizersetkmeanslimits(const ClusterizerState &s, const ae_int_t restarts, const ae_int_t maxits);
 
 
 /*************************************************************************
@@ -1279,7 +1279,7 @@ INPUT PARAMETERS:
   -- ALGLIB --
      Copyright 21.01.2015 by Bochkanov Sergey
 *************************************************************************/
-void clusterizersetkmeansinit(const clusterizerstate &s, const ae_int_t initalgo);
+void clusterizersetkmeansinit(const ClusterizerState &s, const ae_int_t initalgo);
 
 
 /*************************************************************************
@@ -1321,8 +1321,8 @@ NOTE 1: hierarchical clustering algorithms require large amounts of memory.
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizerrunahc(const clusterizerstate &s, ahcreport &rep);
-void smp_clusterizerrunahc(const clusterizerstate &s, ahcreport &rep);
+void clusterizerrunahc(const ClusterizerState &s, ahcreport &rep);
+void smp_clusterizerrunahc(const ClusterizerState &s, ahcreport &rep);
 
 
 /*************************************************************************
@@ -1380,8 +1380,8 @@ NOTE 1: k-means  clustering  can  be  performed  only  for  datasets  with
   -- ALGLIB --
      Copyright 10.07.2012 by Bochkanov Sergey
 *************************************************************************/
-void clusterizerrunkmeans(const clusterizerstate &s, const ae_int_t k, KmeansReport &rep);
-void smp_clusterizerrunkmeans(const clusterizerstate &s, const ae_int_t k, KmeansReport &rep);
+void clusterizerrunkmeans(const ClusterizerState &s, const ae_int_t k, KmeansReport &rep);
+void smp_clusterizerrunkmeans(const ClusterizerState &s, const ae_int_t k, KmeansReport &rep);
 
 
 /*************************************************************************
@@ -6404,38 +6404,38 @@ void _cvreport_init(void* _p, ae_state *_state);
 void _cvreport_init_copy(void* _dst, void* _src, ae_state *_state);
 void _cvreport_clear(void* _p);
 void _cvreport_destroy(void* _p);
-void clusterizercreate(clusterizerstate* s, ae_state *_state);
-void clusterizersetpoints(clusterizerstate* s,
+void clusterizercreate(ClusterizerState* s, ae_state *_state);
+void clusterizersetpoints(ClusterizerState* s,
      /* Real    */ ae_matrix* xy,
      ae_int_t npoints,
      ae_int_t nfeatures,
      ae_int_t disttype,
      ae_state *_state);
-void clusterizersetdistances(clusterizerstate* s,
+void clusterizersetdistances(ClusterizerState* s,
      /* Real    */ ae_matrix* d,
      ae_int_t npoints,
      ae_bool isupper,
      ae_state *_state);
-void clusterizersetahcalgo(clusterizerstate* s,
+void clusterizersetahcalgo(ClusterizerState* s,
      ae_int_t algo,
      ae_state *_state);
-void clusterizersetkmeanslimits(clusterizerstate* s,
+void clusterizersetkmeanslimits(ClusterizerState* s,
      ae_int_t restarts,
      ae_int_t maxits,
      ae_state *_state);
-void clusterizersetkmeansinit(clusterizerstate* s,
+void clusterizersetkmeansinit(ClusterizerState* s,
      ae_int_t initalgo,
      ae_state *_state);
-void clusterizerrunahc(clusterizerstate* s,
+void clusterizerrunahc(ClusterizerState* s,
      ahcreport* rep,
      ae_state *_state);
-void _pexec_clusterizerrunahc(clusterizerstate* s,
+void _pexec_clusterizerrunahc(ClusterizerState* s,
     ahcreport* rep, ae_state *_state);
-void clusterizerrunkmeans(clusterizerstate* s,
+void clusterizerrunkmeans(ClusterizerState* s,
      ae_int_t k,
      KmeansReport* rep,
      ae_state *_state);
-void _pexec_clusterizerrunkmeans(clusterizerstate* s,
+void _pexec_clusterizerrunkmeans(ClusterizerState* s,
     ae_int_t k,
     KmeansReport* rep, ae_state *_state);
 void clusterizergetdistances(/* Real    */ ae_matrix* xy,
