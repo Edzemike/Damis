@@ -77,14 +77,14 @@ private:
      *  \brief Initialization of remainder vectors matrix \a Y_new.
      */
     void Initialize();
-    /*! \fn static void E_SDS(const alglib::real_1d_array &x, double &func, alglib::real_1d_array &grad, void *ptr);
-     *  \brief Function to minimize.
+    /*! \fn static void E_SDS(const alglib::real_1d_array &x, double &MinFunc, alglib::real_1d_array &grad, void *pointer);
+     *  \brief function to minimize.
      *  \param x - the address of remainder vectors (initial values).
-     *  \param func - The address of the minimized function.
+     *  \param MinFunc - The address of the minimized function.
      *  \param grad - The address of gradients.
-     *  \param ptr - optional pointer which is passed to func/grad/hess/jac/rep can be NULL
+     *  \param pointer - optional pointer which is passed to MinFunc/grad/hess/jac/rep can be NULL
      */
-    static void E_SDS(const alglib::real_1d_array &x, double &func, alglib::real_1d_array &grad, void *ptr);
+    static void E_SDS(const alglib::real_1d_array &x, double &MinFunc, alglib::real_1d_array &grad, void *pointer);
 
 };
 #endif // !defined(SDS_H)

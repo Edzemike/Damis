@@ -20,7 +20,7 @@
 //#include <fstream>
 #include <cmath>
 #include <iostream>
-
+using namespace std;
 /** \class StaticData
  *  \brief A class of static attributes for passing data to alglib's static method.
  */
@@ -58,6 +58,27 @@ SDS::SDS(double eps, int maxIter, int dim, ProjectionEnum baseVectInit, int nofB
     distMethod = distMetrics;
 }
 
+DataObject SDS::getQN(DataObject Yqn)
+{
+    int m = 1; // number of objects that will be passed to Newton
+    alglib::minlbfgsstate state;
+    alglib::minlbfgsreport rep;
+    double epsg = epsilon;
+    double epsf = 0;
+    double epsx = 0;
+    alglib::ae_int_t maxits = maxIteration;
+    alglib::real_1d_array Ynew;
+    Ynew = AdditionalMethods::DataObjectTo1DArray(Yqn);
+
+    alglib::minlbfgscreate(m, Ynew, state);
+    alglib::minlbfgssetcond(state, epsg, epsf, epsx, maxits);
+    alglib::minlbfgsoptimize(state,  E_SDS, NULL, NULL);
+    alglib::minlbfgsresults(state, Ynew, rep);
+
+    return AdditionalMethods::alglib1DArrayToDataObject(Ynew);
+}
+
+
 ObjectMatrix SDS::getProjection()
 {
     int m = X.getObjectCount();
@@ -91,9 +112,7 @@ ObjectMatrix SDS::getProjection()
     step = m / nb;
     for (int i = 0; i < nb; i++)
     {
-        rest = index.at(i);
-        index.at(i) = index.at(i * step);
-        index.at(i * step) = rest;
+        std::swap(index.at(i), index.at(i * step));
     }
 
     for (int i = 0; i < m; i++)
@@ -127,8 +146,7 @@ ObjectMatrix SDS::getProjection()
     //initializeProjectionMatrix();
 
     for (int i = 0; i < nb; i++)
-        Y.addObject(StaticData::Y_base.getObjectAt(i), X.getObjectAt(index.at(i)).getClassLabel()); //neaisku ar nesumaiso klasių
-   //     Y.addObject(StaticData::Y_base.getObjectAt(i), X.getObjectAt(i).getClassLabel());
+        Y.addObject(StaticData::Y_base.getObjectAt(i), X.getObjectAt(i).getClassLabel());
 
 //sudedam tai kas grazinama is QN
     ObjectMatrix tmpX;
@@ -144,10 +162,7 @@ ObjectMatrix SDS::getProjection()
         //std::cout << tmpY.getObjectAt(0).getFeatureAt(0) <<" " << tmpY.getObjectAt(0).getFeatureAt(1) << std::endl;
         //std::cout << i << std::endl;
         // retMat = getQN(tmpY);
-
-        Y.addObject(getQN(Y_new.getObjectAt(i)), X.getObjectAt(index.at(nb + i)).getClassLabel()) ;//retMat.getObjectAt(0));
-        //Y.addObject(getQN(Y_new.getObjectAt(i)), X.getObjectAt(nb + i).getClassLabel()) ; //neaisku ar nesumaiso klasių
-
+        Y.addObject(getQN(Y_new.getObjectAt(i)), X.getObjectAt(nb + i).getClassLabel()) ;//retMat.getObjectAt(0));
         //   tmpY.clearDataObjects();
         tmpX.clearDataObjects();
     }
@@ -155,25 +170,6 @@ ObjectMatrix SDS::getProjection()
     return  Y;
 }
 
-DataObject SDS::getQN(DataObject Yqn)
-{
-    int m = 1; // number of objects that will be passed to Newton
-    alglib::minlbfgsstate state;
-    alglib::minlbfgsreport rep;
-    double epsg = epsilon;
-    double epsf = 0;
-    double epsx = 0;
-    alglib::ae_int_t maxits = maxIteration;
-    alglib::real_1d_array Ynew;
-    Ynew = AdditionalMethods::DataObjectTo1DArray(Yqn);
-
-    alglib::minlbfgscreate(m, Ynew, state);
-    alglib::minlbfgssetcond(state, epsg, epsf, epsx, maxits);
-    alglib::minlbfgsoptimize(state,  E_SDS, NULL, NULL);
-    alglib::minlbfgsresults(state, Ynew, rep);
-
-    return AdditionalMethods::alglib1DArrayToDataObject(Ynew);
-}
 
 /*double SDS::getStress(){
     return DimReductionMethod::getStress();
@@ -201,7 +197,7 @@ DataObject SDS::getQN(DataObject Yqn)
     return dist1 + dist2;
 }*/
 
-void SDS::E_SDS(const alglib::real_1d_array &Ynew, double &func, alglib::real_1d_array &grad, void *ptr)
+void SDS::E_SDS(const alglib::real_1d_array &Ynew, double &MinFunc, alglib::real_1d_array &grad, void *pointer)
 {
     double f1 = 0.0, f2 = 0.0, distX = 0.0, distY = 0.0;
     int d = StaticData::Y_base.getObjectAt(0).getFeatureCount();
@@ -260,7 +256,7 @@ void SDS::E_SDS(const alglib::real_1d_array &Ynew, double &func, alglib::real_1d
         }
     }
 
-    func = f1 + f2;
+    MinFunc = f1 + f2;
 
 
     /*for (int i = 0; i < sm; i++)
@@ -290,7 +286,7 @@ void SDS::E_SDS(const alglib::real_1d_array &Ynew, double &func, alglib::real_1d
 void SDS::Initialize()
 {
     int m = X.getObjectCount();
-    int closest_base;
+    int closest_base=0;
     double min_dist;
     double dist_ij;
     DataObject objXi;
@@ -300,8 +296,6 @@ void SDS::Initialize()
     for (int i = 0; i < m - nb; i++)
     {
         min_dist = DBL_MAX;
-        closest_base = 0;
-
         objXi = StaticData::X_new.getObjectAt(i);
         for (int j = 0; j < nb; j++)
         {
