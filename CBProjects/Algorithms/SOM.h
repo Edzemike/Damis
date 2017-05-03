@@ -103,5 +103,11 @@ private:
      */
     bool returnWinners;
 
+    void setObjectClasses(std::vector<std::string>& diffObjClaseses, std::vector<std::string>& objClass, int& m);
+    void getWinnerDistanceAndCordinates(DataObject& objXtmp, ObjectMatrix* M, double &win_dist, int& win_x, int& win_y, double &dist_ij);
+    void removeDuplicates(std::vector<std::string>& diffObjClaseses);
+    void updateObjectMatrix(ObjectMatrix* M, DataObject& objMtmp, int& n);
+	void updateDataObjectsFeatures(DataObject& objXtmp, DataObject& objMtmp, ObjectMatrix* M, double& eta, double& h, double& tmp, double& alpha, int& win_x, int& win_y, int& n);
+
 };
 #endif // !defined(SOM_H)
