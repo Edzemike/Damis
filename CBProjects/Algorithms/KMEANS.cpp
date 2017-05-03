@@ -20,35 +20,26 @@ KMEANS::KMEANS(int noOfClusters, int maxIter):ClusterizationMethods(noOfClusters
     ClusterizationMethods::initializeYMatrix(); //fill matrix with random data
 }
 
-alglib::real_2d_array KMEANS::convertMatrixToReal2D(alglib::real_2d_array inputArray)
+ObjectMatrix KMEANS::getProjection()
 {
+    alglib::ClusterizerState clusterizerState = {};
+    alglib::KmeansReport kmeansReport = {};
+    alglib::real_2d_array inputArray = {};
     int rowsX = X.getObjectCount();
     int colsX = X.getObjectAt(0).getFeatureCount();
     inputArray.setlength(rowsX, colsX);
-    alglib::real_2d_array realArray2D = {};
 
     for (int i = 0; i < rowsX; i++) // convert X matrix to alglib 2d array of reals
     {
         DataObject tmp = X.getObjectAt(i);
         for (int j = 0; j < colsX; j++)
         {
-            realArray2D(i,j) = tmp.getFeatureAt(j);
+            inputArray(i,j) = tmp.getFeatureAt(j);
         }
     }
 
-    return realArray2D;
-}
-
-ObjectMatrix KMEANS::getProjection()
-{
-    alglib::ClusterizerState clusterizerState = {};
-    alglib::KmeansReport kmeansReport = {};
-    alglib::real_2d_array inputArray = {};
-
-    alglib::real_2d_array realArray2D = convertMatrixToReal2D(inputArray);
-
     alglib::clusterizercreate(clusterizerState);
-    alglib::clusterizersetpoints(clusterizerState, realArray2D, 2); //2 means Euclidean distances
+    alglib::clusterizersetpoints(clusterizerState, inputArray, 2); //2 means Euclidean distances
     alglib::clusterizersetkmeanslimits(clusterizerState, 1, this->maxIter);        //1 means quantity of restarts, if maxIter = 0 then unlimited number of iterations are performed
     alglib::clusterizerrunkmeans(clusterizerState, ClusterizationMethods::getNoOfClusters(), kmeansReport);
 
