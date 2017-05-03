@@ -53,6 +53,14 @@ class KMEANS : public ClusterizationMethods
      *  \brief Holds number of clusters.
      */
         int noOfClusters;
+     /*! \var int rowsX
+     *   \brief Holds number of X rows.
+     *   \var int rowsY
+     *   \brief Holds number of X rows.
+     *   \var real_2d_array realArray2D
+     *   \brief Holds 2D real number array
+     */
+        alglib::real_2d_array convertMatrixToReal2D(alglib::real_2d_array inputArray);
 };
 
 #endif // KMEANS_H
