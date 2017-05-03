@@ -38,7 +38,61 @@ class MLP : public ClusterizationMethods
          *  \return double  - average relative error.
          */
         double getStress();
-
+        
+        /*! \fn bool noOfNeuronsIsMoreThan0();
+         *  \brief Returns true if number of neurons in both layers are more than 0.
+         *  \return bool - true;
+         */
+        bool noOfNeuronsIsMoreThan0();
+    
+        /*! \fn bool firstIsMoreSecondIsEqualsTo0()
+         *  \brief Returns true if number of neurons in first layer is more than 0 and equals to zero in second layer.
+         *  \return bool - true;
+         */
+        bool firstIsMoreSecondIsEqualsTo0();
+        
+        /*! \fn bool noOfNeuronsIsEqualsTo0InBothLayers()
+         *  \brief Returns true if number of neurons in both layers is equals to zero.
+         *  \return bool - true;
+         */
+        bool noOfNeuronsIsEqualsTo0InBothLayers();
+        
+        /*! \fn int updateProjectionMatrixY()
+         *  \brief Updates projection matrix Y.
+         *  \return int 0;
+         */
+        int updateProjectionMatrixY();
+        
+        /*! \fn int updateDataObjectOfY()
+         *  \brief Updates DataObject property of Y.
+         *  \return int 0;
+         */
+        int updateDataObjectOfY();
+    
+        /*! \fn int updateDataObjectOfYAndSetMaxProbability()
+         *  \brief Updates DataObject property of Y and sets maximum probability.
+         *  \return int 0;
+         */
+        int updateDataObjectOfYAndSetMaxProbability();
+    
+        /*! \fn int updateDataObjectClassOfY()
+         *  \brief Updates DataObjectClass property of Y.
+         *  \return int 0;
+         */
+        int updateDataObjectClassOfY();
+    
+        /*! \fn int fillVector()
+         *  \brief Fills vector with values.
+         *  \return int 0;
+         */
+        int fillVector();
+    
+        /*! \fn int Initialization()
+         *  \brief Attaches learning data to data set and trains network.
+         *  \return int 0;
+         */
+        int Initialization();
+    
     private:
 
         /*! \var int h1No;
